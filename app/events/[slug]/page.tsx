@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image"
+import BookEvent from "@/components/BookEvent";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
@@ -21,6 +22,14 @@ const EventAgenda = ({ agendaItems }: { agendaItems: string[] }) => (
   </div>
 )
 
+const EventTags = ({ tags }: { tags: string[] }) => (
+  <div className="flex flex-row gap-1.5 flex-wrap">
+    {tags.map((tag: string) => (
+      <div className="pill" key={tag}>{tag}</div>
+    ))}
+  </div>
+)
+
 const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string}>}) => {
   const { slug } = await params;
   const response = await fetch(`${BASE_URL}/api/events/${slug}`);
@@ -29,6 +38,8 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string}>})
   if (!result.success || !result.data) return notFound();
 
   const { description, image, overview, date, time, location, mode, agenda, audience, tags, organizer } = result.data;
+
+  const bookings = 10;
   return (
     <section id='event'>
       <div className="header">
@@ -61,10 +72,22 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string}>})
             <h2>About the Organizer</h2>
             <p>{organizer}</p>
           </section>
+
+          <EventTags tags={JSON.parse(tags)} />
         </div>
         {/* Rightside - Booking Form */}
         <aside className="booking">
-          <p className="text-lg font-semibold">Book Event</p>
+          <div className="signup-card">
+            <h2>Book Your Spot</h2>
+            { bookings > 0 ? (
+              <p className="text-sm">
+                Join {bookings} people who have already booked
+              </p>
+            ) : (
+              <p className="text-sm">Be the first to book your spot</p>
+            )}
+            <BookEvent />
+          </div>
         </aside>
       </div>
     </section>
