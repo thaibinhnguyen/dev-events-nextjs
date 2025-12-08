@@ -5,7 +5,7 @@ export type EventMode = 'online' | 'offline' | 'hybrid';
 
 export interface EventAttrs {
   title: string;
-  slug?: string; // generated from title
+  slug: string; // generated from title
   description: string;
   overview: string;
   image: string;

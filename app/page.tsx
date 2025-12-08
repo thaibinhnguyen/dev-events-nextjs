@@ -1,10 +1,13 @@
 import EventCard from "@/components/EventCard"
 import ExploreBtn from "@/components/ExploreBtn"
 import { EventDoc } from "@/database/event.model";
+import { cacheLife } from "next/dist/server/use-cache/cache-life";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const Page = async () => {
+  'use cache';
+  cacheLife('hours');
   const response = await fetch(`${BASE_URL}/api/events`);
   const { events } = await response.json();
   return (
@@ -16,7 +19,7 @@ const Page = async () => {
         <h3>Feature Events</h3>
         <ul className="events">
           {Array.isArray(events) && events.length > 0 && events.map((event: EventDoc) => (
-            <li key={event._id?.toString?.() ?? event.slug ?? event.title}>
+            <li className="list-none" key={event._id?.toString?.() ?? event.slug ?? event.title}>
               <EventCard
                 title={event.title}
                 image={event.image}
