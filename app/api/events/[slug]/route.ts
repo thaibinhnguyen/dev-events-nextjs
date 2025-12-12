@@ -2,9 +2,6 @@ import { NextRequest } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Event, { EventDoc } from '@/database/event.model';
 
-// Force this route to be dynamic to ensure fresh data per request
-export const dynamic = 'force-dynamic';
-
 // Narrow type for params expected by Next.js route handlers in app directory
 interface RouteParams {
   params: Promise<{
