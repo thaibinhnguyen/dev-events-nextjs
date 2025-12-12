@@ -3,6 +3,7 @@ import { Event } from './event.model';
 
 export interface BookingAttrs {
   eventId: Types.ObjectId;
+  slug: string,
   email: string;
 }
 
